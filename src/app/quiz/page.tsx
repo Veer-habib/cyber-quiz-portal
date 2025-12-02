@@ -302,7 +302,7 @@ export default function QuizPage() {
 
         {/* Question Navigation */}
         <div className="bg-hacker-dark border-2 border-hacker-cyan/50 rounded-lg p-5 shadow-lg shadow-hacker-cyan/20 animate-fade-in">
-          <p className="text-hacker-cyan text-xs font-mono mb-3 font-bold">🎯 QUESTION NAVIGATOR</p>
+          <p className="text-hacker-cyan text-xs font-mono mb-3 font-bold">🎯 QUESTION NAVIGATOR (Click to Jump)</p>
           <div className="grid grid-cols-5 sm:grid-cols-10 md:grid-cols-15 gap-2">
             {quizQuestions.map((_, index) => (
               <button
@@ -321,6 +321,21 @@ export default function QuizPage() {
                 {index + 1}
               </button>
             ))}
+          </div>
+          
+          <div className="mt-4 pt-4 border-t border-hacker-cyan/30 grid grid-cols-3 gap-4 text-xs font-mono">
+            <div className="text-center">
+              <div className="text-hacker-green font-bold">{Object.keys(answers).length}</div>
+              <div className="text-hacker-cyan">Answered</div>
+            </div>
+            <div className="text-center">
+              <div className="text-hacker-cyan font-bold">{quizQuestions.length - Object.keys(answers).length}</div>
+              <div className="text-hacker-cyan">Remaining</div>
+            </div>
+            <div className="text-center">
+              <div className="text-hacker-purple font-bold">{Math.round(progressPercent)}%</div>
+              <div className="text-hacker-cyan">Complete</div>
+            </div>
           </div>
         </div>
       </div>

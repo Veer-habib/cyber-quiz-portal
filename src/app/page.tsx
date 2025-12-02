@@ -124,72 +124,78 @@ export default function UserPortal() {
     return (
       <div className="min-h-screen bg-hacker-darker bg-grid flex items-center justify-center p-4">
         <div className="w-full max-w-md">
-          <div className="bg-hacker-dark border-2 border-hacker-green rounded-lg p-8 shadow-lg shadow-hacker-green/30">
-            <h2 className="text-2xl font-bold text-hacker-green mb-6">USER REGISTRATION</h2>
+          <div className="bg-hacker-dark border-2 border-hacker-green rounded-lg p-8 shadow-lg shadow-hacker-green/40 animate-fade-in">
+            <h2 className="text-3xl font-bold text-hacker-green mb-2 drop-shadow-[0_0_10px_rgba(0,255,0,0.6)]">
+              📋 USER REGISTRATION
+            </h2>
+            <p className="text-hacker-cyan text-xs font-mono mb-6">Fill in your details to proceed</p>
             
             <form onSubmit={handleFormSubmit} className="space-y-4">
               <div>
-                <label className="block text-hacker-cyan text-sm font-mono mb-2">Full Name *</label>
+                <label className="block text-hacker-cyan text-sm font-mono mb-2 font-bold">👤 Full Name *</label>
                 <input
                   type="text"
                   name="name"
                   value={userData.name}
                   onChange={handleFormChange}
-                  className="w-full px-4 py-2 bg-hacker-dark border-2 border-hacker-green text-hacker-green rounded focus:outline-none focus:shadow-lg focus:shadow-hacker-green/50"
+                  placeholder="Enter your full name"
+                  className="w-full px-4 py-3 bg-hacker-dark border-2 border-hacker-green text-hacker-green rounded focus:outline-none focus:shadow-lg focus:shadow-hacker-green/50 transition placeholder-hacker-green/40"
                   required
                 />
               </div>
 
               <div>
-                <label className="block text-hacker-cyan text-sm font-mono mb-2">Email *</label>
+                <label className="block text-hacker-cyan text-sm font-mono mb-2 font-bold">📧 Email Address *</label>
                 <input
                   type="email"
                   name="email"
                   value={userData.email}
                   onChange={handleFormChange}
-                  className="w-full px-4 py-2 bg-hacker-dark border-2 border-hacker-green text-hacker-green rounded focus:outline-none focus:shadow-lg focus:shadow-hacker-green/50"
+                  placeholder="your.email@domain.com"
+                  className="w-full px-4 py-3 bg-hacker-dark border-2 border-hacker-green text-hacker-green rounded focus:outline-none focus:shadow-lg focus:shadow-hacker-green/50 transition placeholder-hacker-green/40"
                   required
                 />
               </div>
 
               <div>
-                <label className="block text-hacker-cyan text-sm font-mono mb-2">USN/Roll No *</label>
+                <label className="block text-hacker-cyan text-sm font-mono mb-2 font-bold">🆔 USN/Roll No *</label>
                 <input
                   type="text"
                   name="usn"
                   value={userData.usn}
                   onChange={handleFormChange}
-                  className="w-full px-4 py-2 bg-hacker-dark border-2 border-hacker-green text-hacker-green rounded focus:outline-none focus:shadow-lg focus:shadow-hacker-green/50"
+                  placeholder="e.g., 1CS20EC001"
+                  className="w-full px-4 py-3 bg-hacker-dark border-2 border-hacker-green text-hacker-green rounded focus:outline-none focus:shadow-lg focus:shadow-hacker-green/50 transition placeholder-hacker-green/40"
                   required
                 />
               </div>
 
               <div>
-                <label className="block text-hacker-cyan text-sm font-mono mb-2">User Type *</label>
+                <label className="block text-hacker-cyan text-sm font-mono mb-2 font-bold">👨‍🎓 User Type *</label>
                 <select
                   name="userType"
                   value={userData.userType}
                   onChange={handleFormChange}
-                  className="w-full px-4 py-2 bg-hacker-dark border-2 border-hacker-green text-hacker-green rounded focus:outline-none focus:shadow-lg focus:shadow-hacker-green/50"
+                  className="w-full px-4 py-3 bg-hacker-dark border-2 border-hacker-green text-hacker-green rounded focus:outline-none focus:shadow-lg focus:shadow-hacker-green/50 transition font-mono"
                 >
-                  <option value="student">Student</option>
-                  <option value="faculty">Faculty</option>
+                  <option value="student">🎓 Student</option>
+                  <option value="faculty">👨‍🏫 Faculty</option>
                 </select>
               </div>
 
               <button
                 type="submit"
-                className="w-full px-6 py-3 bg-hacker-green text-hacker-darker font-bold rounded hover:shadow-glow-green transition-all hover:scale-105 active:scale-95 mt-6"
+                className="w-full px-6 py-3 bg-gradient-to-r from-hacker-green to-hacker-cyan text-hacker-darker font-bold rounded-lg hover:shadow-glow-green transition-all hover:scale-105 active:scale-95 mt-6 transform duration-300 font-mono"
               >
-                PROCEED TO QUIZ
+                ✓ PROCEED TO QUIZ
               </button>
             </form>
 
             <button
               onClick={() => setStep('welcome')}
-              className="w-full mt-3 px-6 py-2 border-2 border-hacker-cyan text-hacker-cyan rounded hover:bg-hacker-cyan hover:text-hacker-darker transition"
+              className="w-full mt-3 px-6 py-2 border-2 border-hacker-cyan text-hacker-cyan rounded-lg hover:bg-hacker-cyan hover:text-hacker-darker hover:shadow-glow-blue transition font-mono font-bold"
             >
-              Back
+              ← BACK
             </button>
           </div>
         </div>

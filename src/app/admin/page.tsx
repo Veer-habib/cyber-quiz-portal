@@ -9,8 +9,9 @@ export default function AdminDashboard() {
   const [showLoginForm, setShowLoginForm] = useState(true)
   const [adminPassword, setAdminPassword] = useState('')
   const [results, setResults] = useState<QuizResult[]>([])
-  const [selectedView, setSelectedView] = useState<'overview' | 'results' | 'analytics'>('overview')
+  const [selectedView, setSelectedView] = useState<'overview' | 'results' | 'analytics' | 'leaderboard'>('overview')
   const [passwordInput, setPasswordInput] = useState('')
+  const [searchTerm, setSearchTerm] = useState('')
 
   const ADMIN_PASSWORD = 'CyberSecure2024'
 
@@ -121,17 +122,17 @@ export default function AdminDashboard() {
 
         {/* Navigation Tabs */}
         <div className="flex gap-4 mb-8 flex-wrap">
-          {(['overview', 'results', 'analytics'] as const).map((tab) => (
+          {(['overview', 'results', 'analytics', 'leaderboard'] as const).map((tab) => (
             <button
               key={tab}
               onClick={() => setSelectedView(tab)}
-              className={`px-4 py-2 rounded font-mono text-sm transition ${
+              className={`px-4 py-3 rounded font-mono text-sm font-bold transition transform hover:scale-105 ${
                 selectedView === tab
-                  ? 'bg-hacker-red text-hacker-darker border-2 border-hacker-red'
-                  : 'border-2 border-hacker-red text-hacker-red hover:bg-hacker-red/20'
+                  ? 'bg-gradient-to-r from-hacker-red to-hacker-purple text-hacker-darker border-2 border-hacker-red shadow-lg shadow-hacker-red/50'
+                  : 'border-2 border-hacker-red text-hacker-red hover:bg-hacker-red/20 hover:shadow-glow-red'
               }`}
             >
-              {tab.toUpperCase()}
+              {tab === 'overview' && '📊'} {tab === 'results' && '📋'} {tab === 'analytics' && '📈'} {tab === 'leaderboard' && '🏆'} {tab.toUpperCase()}
             </button>
           ))}
         </div>
@@ -254,39 +255,110 @@ export default function AdminDashboard() {
           </div>
         )}
 
+        {/* Leaderboard Tab */}
+        {selectedView === 'leaderboard' && (
+          <div className="bg-hacker-dark border-2 border-hacker-green rounded-lg p-6 shadow-lg shadow-hacker-green/40">
+            <h2 className="text-2xl font-bold text-hacker-green mb-6 drop-shadow-[0_0_10px_rgba(0,255,0,0.6)]">🏆 LEADERBOARD</h2>
+            {results.length > 0 ? (
+              <div className="space-y-3">
+                {results
+                  .sort((a, b) => b.percentage - a.percentage)
+                  .map((result, index) => (
+                    <div
+                      key={index}
+                      className={`p-4 rounded-lg border-2 transition transform hover:scale-102 ${
+                        index === 0
+                          ? 'border-hacker-green bg-hacker-green/10 shadow-lg shadow-hacker-green/50'
+                          : index === 1
+                          ? 'border-hacker-cyan bg-hacker-cyan/10 shadow-lg shadow-hacker-cyan/30'
+                          : index === 2
+                          ? 'border-hacker-purple bg-hacker-purple/10 shadow-lg shadow-hacker-purple/30'
+                          : 'border-hacker-green/50 hover:border-hacker-green'
+                      }`}
+                    >
+                      <div className="flex justify-between items-center">
+                        <div className="flex items-center gap-4 flex-1">
+                          <div className={`w-12 h-12 rounded-full flex items-center justify-center font-bold text-lg
+                            ${index === 0 ? 'bg-hacker-green text-hacker-darker' : index === 1 ? 'bg-hacker-cyan text-hacker-darker' : index === 2 ? 'bg-hacker-purple text-hacker-darker' : 'bg-hacker-dark border-2 border-hacker-green text-hacker-green'}`}>
+                            {index < 3 ? ['🥇', '🥈', '🥉'][index] : index + 1}
+                          </div>
+                          <div className="flex-1">
+                            <p className="text-hacker-green font-bold text-lg">{result.userName}</p>
+                            <p className="text-hacker-cyan text-xs font-mono">{result.userEmail}</p>
+                          </div>
+                        </div>
+                        <div className="text-right">
+                          <div className="text-3xl font-bold text-hacker-green drop-shadow-lg">
+                            {result.percentage.toFixed(1)}%
+                          </div>
+                          <div className="text-hacker-cyan text-sm font-mono">
+                            {result.score}/{30} · {result.timeTakenFormatted}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+              </div>
+            ) : (
+              <p className="text-hacker-cyan text-center py-8 text-lg">No submissions yet</p>
+            )}
+          </div>
+        )}
+
         {/* Export Button */}
-        <div className="mt-8 flex gap-4 justify-center">
+        <div className="mt-10 flex gap-4 justify-center flex-wrap">
           <button
             onClick={() => {
               const csv = [
-                ['Name', 'Email', 'USN', 'Score', 'Percentage', 'Time', 'Eligible'],
+                ['Name', 'Email', 'USN', 'Score', 'Percentage', 'Time', 'Eligible', 'Submitted At'],
                 ...results.map(r => [
                   r.userName,
                   r.userEmail,
                   r.usn,
-                  `${r.score}/20`,
+                  `${r.score}/30`,
                   `${r.percentage.toFixed(1)}%`,
                   r.timeTakenFormatted,
-                  r.eligible ? 'Yes' : 'No'
+                  r.eligible ? 'Yes' : 'No',
+                  new Date(r.submittedAt).toLocaleString()
                 ])
-              ].map(row => row.join(',')).join('\n')
+              ].map(row => row.map(cell => `"${cell}"`).join(',')).join('\n')
               
-              const blob = new Blob([csv], { type: 'text/csv' })
-              const url = window.URL.createObjectURL(blob)
-              const a = document.createElement('a')
-              a.href = url
-              a.download = `quiz-results-${new Date().toISOString().split('T')[0]}.csv`
-              a.click()
+              const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' })
+              const link = document.createElement('a')
+              const url = URL.createObjectURL(blob)
+              link.setAttribute('href', url)
+              link.setAttribute('download', `quiz-results-${new Date().toISOString().split('T')[0]}.csv`)
+              link.style.visibility = 'hidden'
+              document.body.appendChild(link)
+              link.click()
+              document.body.removeChild(link)
             }}
-            className="px-6 py-3 bg-hacker-green text-hacker-darker font-bold rounded hover:shadow-glow-green transition"
+            className="px-8 py-3 bg-gradient-to-r from-hacker-green to-hacker-cyan text-hacker-darker font-bold rounded-lg hover:shadow-glow-green transition transform hover:scale-105 active:scale-95 font-mono"
           >
-            EXPORT CSV
+            💾 EXPORT CSV
+          </button>
+          <button
+            onClick={() => {
+              const json = JSON.stringify(results, null, 2)
+              const blob = new Blob([json], { type: 'application/json' })
+              const link = document.createElement('a')
+              const url = URL.createObjectURL(blob)
+              link.setAttribute('href', url)
+              link.setAttribute('download', `quiz-results-${new Date().toISOString().split('T')[0]}.json`)
+              link.style.visibility = 'hidden'
+              document.body.appendChild(link)
+              link.click()
+              document.body.removeChild(link)
+            }}
+            className="px-8 py-3 border-2 border-hacker-cyan text-hacker-cyan rounded-lg hover:bg-hacker-cyan hover:text-hacker-darker hover:shadow-glow-blue transition transform hover:scale-105 active:scale-95 font-mono font-bold"
+          >
+            📄 EXPORT JSON
           </button>
           <Link
             href="/"
-            className="px-6 py-3 border-2 border-hacker-cyan text-hacker-cyan rounded hover:bg-hacker-cyan hover:text-hacker-darker transition"
+            className="px-8 py-3 border-2 border-hacker-purple text-hacker-purple rounded-lg hover:bg-hacker-purple hover:text-hacker-darker hover:shadow-lg hover:shadow-hacker-purple/50 transition transform hover:scale-105 active:scale-95 font-mono font-bold"
           >
-            RETURN HOME
+            🏠 HOME
           </Link>
         </div>
       </div>
