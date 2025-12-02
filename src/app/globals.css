@@ -1,0 +1,93 @@
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    @apply box-border;
+  }
+
+  html {
+    @apply scroll-smooth;
+  }
+
+  body {
+    @apply bg-hacker-darker text-hacker-green font-mono;
+    background-image: 
+      linear-gradient(0deg, transparent 24%, rgba(0, 255, 0, 0.05) 25%, rgba(0, 255, 0, 0.05) 26%, transparent 27%, transparent 74%, rgba(0, 255, 0, 0.05) 75%, rgba(0, 255, 0, 0.05) 76%, transparent 77%, transparent),
+      linear-gradient(90deg, transparent 24%, rgba(0, 255, 0, 0.05) 25%, rgba(0, 255, 0, 0.05) 26%, transparent 27%, transparent 74%, rgba(0, 255, 0, 0.05) 75%, rgba(0, 255, 0, 0.05) 76%, transparent 77%, transparent);
+    background-size: 50px 50px;
+  }
+}
+
+@layer components {
+  .terminal-text {
+    @apply font-mono text-hacker-green drop-shadow-[0_0_10px_rgba(0,255,0,0.5)];
+    font-family: 'Share Tech Mono', monospace;
+  }
+
+  .terminal-border {
+    @apply border border-hacker-green;
+    box-shadow: inset 0 0 10px rgba(0, 255, 0, 0.1), 0 0 10px rgba(0, 255, 0, 0.3);
+  }
+
+  .cyber-button {
+    @apply px-4 py-2 bg-hacker-green text-hacker-darker font-bold rounded border-2 border-hacker-green transition-all duration-300;
+    @apply hover:shadow-glow-green hover:scale-105 active:scale-95;
+  }
+
+  .cyber-button-outline {
+    @apply px-4 py-2 border-2 border-hacker-green text-hacker-green rounded transition-all duration-300;
+    @apply hover:shadow-glow-green hover:bg-hacker-green hover:text-hacker-darker;
+  }
+
+  .cyber-input {
+    @apply w-full px-3 py-2 bg-hacker-dark border-2 border-hacker-green text-hacker-green rounded;
+    @apply focus:outline-none focus:shadow-glow-green transition-all duration-300;
+  }
+
+  .cyber-card {
+    @apply bg-hacker-dark border-2 border-hacker-green rounded p-4 transition-all duration-300;
+    @apply hover:shadow-glow-green hover:border-hacker-cyan;
+  }
+
+  .code-block {
+    @apply bg-hacker-darker border border-hacker-green rounded p-3 text-xs font-mono overflow-x-auto;
+    @apply before:content-['$_'] before:text-hacker-cyan before:mr-2;
+  }
+
+  .scan-effect {
+    @apply animate-scan-lines;
+  }
+
+  .glow-text {
+    @apply drop-shadow-[0_0_10px_rgba(0,255,0,0.8)];
+  }
+
+  .matrix-rain {
+    @apply animate-pulse-glow;
+  }
+
+  .flicker {
+    @apply animate-flicker;
+  }
+}
+
+@layer utilities {
+  .bg-grid {
+    background-image: 
+      linear-gradient(0deg, transparent 24%, rgba(0, 255, 0, 0.05) 25%, rgba(0, 255, 0, 0.05) 26%, transparent 27%, transparent 74%, rgba(0, 255, 0, 0.05) 75%, rgba(0, 255, 0, 0.05) 76%, transparent 77%, transparent),
+      linear-gradient(90deg, transparent 24%, rgba(0, 255, 0, 0.05) 25%, rgba(0, 255, 0, 0.05) 26%, transparent 27%, transparent 74%, rgba(0, 255, 0, 0.05) 75%, rgba(0, 255, 0, 0.05) 76%, transparent 77%, transparent);
+    background-size: 50px 50px;
+  }
+
+  .text-glow {
+    @apply drop-shadow-[0_0_10px_currentColor];
+  }
+
+  .crt-flicker {
+    @apply animate-flicker;
+  }
+}
