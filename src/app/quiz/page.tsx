@@ -244,7 +244,7 @@ export default function QuizPage() {
               }`}>
                 {formatSeconds(timeRemaining)}
               </div>
-              <div className="mt-3 h-1.5 bg-hacker-darker rounded-full overflow-hidden border border-hacker-cyan/20">
+              <div className="mt-4 h-1.5 bg-hacker-darker rounded-full overflow-hidden border border-hacker-cyan/20">
                 <div
                   className={`h-full transition-all duration-300 ease-linear rounded-full ${
                     timeRemaining < 60 ? 'bg-hacker-red shadow-lg shadow-hacker-red/50' : 'bg-gradient-to-r from-hacker-green to-hacker-cyan shadow-lg shadow-hacker-green/40'
@@ -252,9 +252,6 @@ export default function QuizPage() {
                   style={{ width: `${(timeRemaining / QUIZ_DURATION_SECONDS) * 100}%` }}
                 />
               </div>
-              <p className="text-hacker-cyan text-xs font-mono text-center mt-3 opacity-75">
-                {Math.floor(timeRemaining / 60)}m {Math.floor(timeRemaining % 60)}s
-              </p>
             </div>
           </div>
 
