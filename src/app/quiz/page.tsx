@@ -211,39 +211,74 @@ export default function QuizPage() {
 
   return (
     <div className="min-h-screen bg-hacker-darker bg-grid p-4">
-      <div className="max-w-4xl mx-auto">
-        {/* Header */}
-        <div className="flex justify-between items-center mb-8 pb-4 border-b-2 border-hacker-green/50 animate-fade-in">
-          <div>
-            <h1 className="text-3xl font-bold text-hacker-green drop-shadow-[0_0_20px_rgba(0,255,0,0.6)] animate-pulse-glow">
-              ⚔️ CYBERSECURITY QUIZ
-            </h1>
-            <p className="text-hacker-cyan text-sm font-mono mt-1">Question {currentQuestion + 1} of {quizQuestions.length}</p>
-          </div>
-          <div className="text-right animate-glow-pulse">
-            <div className="text-4xl font-bold text-hacker-green font-mono drop-shadow-[0_0_15px_rgba(0,255,0,0.8)]">
-              {formatSeconds(timeRemaining)}
+      <div className="max-w-5xl mx-auto">
+        {/* Top Header with Integrated Timer */}
+        <div className="mb-8 animate-fade-in">
+          <div className="flex justify-between items-start gap-6 mb-6">
+            {/* Left Section */}
+            <div className="flex-1">
+              <h1 className="text-4xl font-bold text-hacker-green drop-shadow-[0_0_20px_rgba(0,255,0,0.6)] animate-pulse-glow mb-2">
+                ⚔️ CYBERSECURITY QUIZ
+              </h1>
+              <div className="flex items-center gap-4">
+                <div className="px-4 py-2 bg-hacker-cyan/20 border border-hacker-cyan rounded-lg">
+                  <p className="text-hacker-cyan text-sm font-mono">Question <span className="text-hacker-green font-bold text-lg">{currentQuestion + 1}</span>/<span className="text-hacker-purple font-bold">{quizQuestions.length}</span></p>
+                </div>
+                <div className="px-4 py-2 bg-hacker-purple/20 border border-hacker-purple rounded-lg">
+                  <p className="text-hacker-purple text-sm font-mono">Category: <span className="text-hacker-green font-bold">{question.category}</span></p>
+                </div>
+              </div>
             </div>
-            <p className="text-hacker-cyan text-xs font-mono">⏱️ Time Remaining</p>
-          </div>
-        </div>
 
-        {/* Progress Bar */}
-        <div className="mb-8 bg-hacker-darker border-2 border-hacker-cyan/50 rounded-lg p-4 shadow-lg shadow-hacker-cyan/20 animate-slide-in">
-          <div className="flex justify-between text-xs text-hacker-cyan font-mono mb-3">
-            <span>📊 PROGRESS</span>
-            <span className="text-hacker-green font-bold">{Math.round(progressPercent)}%</span>
+            {/* Timer Card - Integrated and Smooth */}
+            <div className={`w-48 p-6 rounded-xl border-2 backdrop-blur-sm transition-all duration-500 ${
+              timeRemaining < 60
+                ? 'border-hacker-red bg-hacker-red/10 shadow-lg shadow-hacker-red/50 animate-pulse'
+                : timeRemaining < 300
+                ? 'border-hacker-purple bg-hacker-purple/10 shadow-lg shadow-hacker-purple/30'
+                : 'border-hacker-green bg-hacker-green/10 shadow-lg shadow-hacker-green/40 hover:shadow-glow-green'
+            }`}>
+              <p className="text-hacker-cyan text-xs font-mono text-center mb-3 uppercase tracking-widest">⏱️ Time</p>
+              <div className={`text-5xl font-black font-mono text-center drop-shadow-lg transition-all duration-300 ${
+                timeRemaining < 60 ? 'text-hacker-red animate-pulse' : 'text-hacker-green'
+              }`}>
+                {formatSeconds(timeRemaining)}
+              </div>
+              <div className="mt-3 h-1.5 bg-hacker-darker rounded-full overflow-hidden border border-hacker-cyan/20">
+                <div
+                  className={`h-full transition-all duration-300 ease-linear rounded-full ${
+                    timeRemaining < 60 ? 'bg-hacker-red shadow-lg shadow-hacker-red/50' : 'bg-gradient-to-r from-hacker-green to-hacker-cyan shadow-lg shadow-hacker-green/40'
+                  }`}
+                  style={{ width: `${(timeRemaining / QUIZ_DURATION_SECONDS) * 100}%` }}
+                />
+              </div>
+              <p className="text-hacker-cyan text-xs font-mono text-center mt-3 opacity-75">
+                {Math.floor(timeRemaining / 60)}m {Math.floor(timeRemaining % 60)}s
+              </p>
+            </div>
           </div>
-          <div className="w-full h-3 bg-hacker-dark rounded-full overflow-hidden border border-hacker-green/30">
-            <div
-              className="h-full bg-gradient-to-r from-hacker-green to-hacker-cyan transition-all duration-300 shadow-lg shadow-hacker-green/50 rounded-full"
-              style={{ width: `${progressPercent}%` }}
-            />
+
+          {/* Smooth Progress Bar */}
+          <div className="bg-hacker-darker border-2 border-hacker-cyan/50 rounded-xl p-5 shadow-lg shadow-hacker-cyan/20 hover:shadow-glow-blue transition-all duration-500">
+            <div className="flex justify-between text-xs text-hacker-cyan font-mono mb-3 uppercase tracking-wider">
+              <span>📊 Quiz Progress</span>
+              <span className="text-hacker-green font-bold text-sm">{Math.round(progressPercent)}%</span>
+            </div>
+            <div className="w-full h-2.5 bg-hacker-dark rounded-full overflow-hidden border border-hacker-green/30">
+              <div
+                className="h-full bg-gradient-to-r from-hacker-green via-hacker-cyan to-hacker-purple transition-all duration-500 ease-out shadow-lg shadow-hacker-green/50 rounded-full"
+                style={{ width: `${progressPercent}%` }}
+              />
+            </div>
+            <div className="mt-3 flex justify-between text-xs text-hacker-cyan/70 font-mono">
+              <span>✓ {Object.keys(answers).length} Answered</span>
+              <span>○ {quizQuestions.length - Object.keys(answers).length} Remaining</span>
+            </div>
           </div>
         </div>
 
         {/* Question Card */}
-        <div className="bg-hacker-dark border-2 border-hacker-green rounded-lg p-8 shadow-lg shadow-hacker-green/40 mb-8 animate-bounce-in transform transition-all">
+        <div className="bg-hacker-dark border-2 border-hacker-green rounded-xl p-8 shadow-lg shadow-hacker-green/40 mb-8 animate-scale-in transform transition-all duration-500 hover:shadow-glow-green">
           <div className="mb-2 inline-block px-3 py-1 bg-hacker-cyan/20 border border-hacker-cyan rounded text-hacker-cyan text-xs font-mono">
             {question.category}
           </div>
